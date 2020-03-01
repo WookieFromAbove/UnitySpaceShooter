@@ -1,0 +1,12 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class MainMenuControls : MonoBehaviour
+{
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0); // main menu
+    }
+}
