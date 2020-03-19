@@ -13,10 +13,23 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject[] _powerupPrefabs;
 
+    [SerializeField]
+    private int[] _powerupRateTable =
+    {
+        18, // trippleShot
+        18, // health
+        18, // speedBoost
+        18, // shield
+        18, // ammo
+        10 // bomb
+    };
+
+    private int _powerupTableTotal;
+
     private bool _stopSpawning = false;
 
     private bool _isSpawning = false;
-
+    
     private Background _background;
 
     private void Start()
@@ -26,6 +39,8 @@ public class SpawnManager : MonoBehaviour
         {
             Debug.Log("Background is NULL.");
         }
+
+        CalculatePowerupRateTotal();
     }
 
     private void Update()
@@ -64,6 +79,14 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    private void CalculatePowerupRateTotal()
+    {
+        foreach (int rate in _powerupRateTable)
+        {
+            _powerupTableTotal += rate;
+        }
+    }
+
     IEnumerator SpawnPowerupRoutine()
     {
         yield return new WaitForSeconds(3f);
@@ -73,11 +96,21 @@ public class SpawnManager : MonoBehaviour
             float randomPowerupX = Random.Range(-9f, 9f);
             Vector3 _spawnPowerupPosition = new Vector3(randomPowerupX, 7.5f, 0);
 
-            int randomPowerup = Random.Range(0, _powerupPrefabs.Length);
+            int randomPowerup = Random.Range(0, _powerupTableTotal);
 
-            Instantiate(_powerupPrefabs[randomPowerup], _spawnPowerupPosition, Quaternion.identity);
-            
-            yield return new WaitForSeconds(Random.Range(5f, 10f));
+            for (int i = 0; i < _powerupRateTable.Length; i++)
+            {
+                if (randomPowerup <= _powerupRateTable[i])
+                {
+                    Instantiate(_powerupPrefabs[i], _spawnPowerupPosition, Quaternion.identity);
+
+                    yield return new WaitForSeconds(Random.Range(5f, 10f));
+                }
+                else
+                {
+                    randomPowerup -= _powerupRateTable[i];
+                }
+            }
         }
     }
 

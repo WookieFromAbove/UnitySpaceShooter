@@ -13,7 +13,7 @@ public class Background : MonoBehaviour
     private Vector2 _mainOffset;
 
     private Renderer _spriteRenderer;
-    
+
     void Start()
     {
         _spriteRenderer = GetComponent<Renderer>();

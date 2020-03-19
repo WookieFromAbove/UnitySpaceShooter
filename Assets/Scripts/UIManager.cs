@@ -9,6 +9,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _scoreTMP;
 
+    [SerializeField]
+    private TextMeshProUGUI _ammoTMP;
+
     private Player _player;
 
     [SerializeField]
@@ -16,6 +19,9 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Sprite[] _livesSprites;
+
+    [SerializeField]
+    public Slider _thrusterBar;
 
     private bool _isPlayerDead = false;
 
@@ -47,6 +53,8 @@ public class UIManager : MonoBehaviour
             Debug.Log("Player is NULL.");
         }
 
+        _ammoTMP.text = _player.CurrentAmmo() + " /";
+
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         if (_gameManager == null)
         {
@@ -57,12 +65,19 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         CurrentScore();
+        CurrentAmmo();
         CurrentLives();
+        CurrentEngineThrusterTime();
     }
 
     public void CurrentScore()
     {
         _scoreTMP.text = "Space Bucks: $" + _player.CurrentScore();
+    }
+
+    private void CurrentAmmo()
+    {
+        _ammoTMP.text = _player.CurrentAmmo() + " /";
     }
 
     public void CurrentLives()
@@ -78,6 +93,11 @@ public class UIManager : MonoBehaviour
                 PlayerDeathSequence();
             }
         }
+    }
+
+    private void CurrentEngineThrusterTime()
+    {
+        _thrusterBar.value = _player.CurrentEngineThrusterTime();
     }
 
     private void PlayerDeathSequence()

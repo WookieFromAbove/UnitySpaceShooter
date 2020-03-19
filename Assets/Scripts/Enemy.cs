@@ -121,27 +121,44 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other != null && _player != null)
         {
-            if (_player != null)
+            switch (other.tag)
             {
-                _player.DeductFromScore(5);
+                case "Player":
 
-                _player.Damage();
+                    _player.DeductFromScore(5);
+
+                    _player.Damage();
+
+                    StartCoroutine(OnEnemyDeathRoutine());
+
+                    break;
+
+                case "Laser":
+
+                    _player.AddToScore(10);
+
+                    Destroy(other.gameObject);
+
+                    StartCoroutine(OnEnemyDeathRoutine());
+
+                    break;
+
+                case "Bomb":
+
+                    _player.AddToScore(20);
+
+                    Destroy(other.gameObject);
+
+                    StartCoroutine(OnEnemyDeathRoutine());
+
+                    break;
+
+                default:
+
+                    break;
             }
-
-            StartCoroutine(OnEnemyDeathRoutine());
-        }
-        else if (other.CompareTag("Laser"))
-        {
-            if (_player != null)
-            {
-                _player.AddToScore(10);
-            }
-
-            Destroy(other.gameObject);
-
-            StartCoroutine(OnEnemyDeathRoutine());
         }
     }
 

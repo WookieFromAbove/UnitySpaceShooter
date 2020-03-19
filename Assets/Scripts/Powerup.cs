@@ -8,7 +8,7 @@ public class Powerup : MonoBehaviour
     private float _powerupSpeed = 3f;
 
     [SerializeField]
-    private int _powerupID; // 0 = tripple, 1 = big, 2 = speed, 3 = shield
+    private int _powerupID; // 0 = tripple, 1 = health, 2 = speed, 3 = shield, 4 = ammo, 5 = bomb
 
     [SerializeField]
     private AudioClip _powerupClip;
@@ -17,7 +17,7 @@ public class Powerup : MonoBehaviour
     {
         transform.Translate(Vector3.down * _powerupSpeed * Time.deltaTime, Space.World);
 
-        if (_powerupID == 1)
+        if (_powerupID == 5)
         {
             int rotationSpeed = 50;
 
@@ -43,13 +43,19 @@ public class Powerup : MonoBehaviour
                         player.TrippleShotActive();
                         break;
                     case 1:
-                        player.BombActive();
+                        player.GainLife();
                         break;
                     case 2:
                         player.SpeedBoostActive(); 
                         break;
                     case 3:
                         player.ShieldActive();
+                        break;
+                    case 4:
+                        player.ReloadAmmo();
+                        break;
+                    case 5:
+                        player.BombActive();
                         break;
                 }
             }
