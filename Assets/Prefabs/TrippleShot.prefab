@@ -45,6 +45,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1328296437089632666, guid: 8bb2d24eb57603740b144893be173490,
+        type: 3}
+      propertyPath: m_TagString
+      value: Laser
+      objectReference: {fileID: 0}
     - target: {fileID: 3375856681346269996, guid: 8bb2d24eb57603740b144893be173490,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -140,6 +145,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1328296437089632666, guid: 8bb2d24eb57603740b144893be173490,
+        type: 3}
+      propertyPath: m_TagString
+      value: Laser
+      objectReference: {fileID: 0}
     - target: {fileID: 3375856681346269996, guid: 8bb2d24eb57603740b144893be173490,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -233,6 +243,11 @@ PrefabInstance:
     - target: {fileID: 1328296437089632666, guid: 8bb2d24eb57603740b144893be173490,
         type: 3}
       propertyPath: m_Name
+      value: Laser
+      objectReference: {fileID: 0}
+    - target: {fileID: 1328296437089632666, guid: 8bb2d24eb57603740b144893be173490,
+        type: 3}
+      propertyPath: m_TagString
       value: Laser
       objectReference: {fileID: 0}
     - target: {fileID: 3375856681346269996, guid: 8bb2d24eb57603740b144893be173490,

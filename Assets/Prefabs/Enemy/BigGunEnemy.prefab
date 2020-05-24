@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6903505668185549093}
   - component: {fileID: 6903505668185549098}
+  - component: {fileID: 3560561799487229893}
   - component: {fileID: 6903505668185549099}
   - component: {fileID: 6903505668185549096}
-  - component: {fileID: 457676112181894667}
   - component: {fileID: -2786716258130025406}
   - component: {fileID: 880616060430289059}
   m_Layer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 796439743
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: b1c34df04e7481c418df7476ae41dc02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,6 +86,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3560561799487229893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6903505668185549097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b638e0590f6d31842bafcac027828e93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemySpeed: 3.5
+  _enemyID: 1
+  _explosionClip: {fileID: 8300000, guid: d561de5c8f96bec4cab3ad0155c2c6b2, type: 3}
+  _fireRate: 0
+  _enemyLaserPrefab: {fileID: 7695861055705472164, guid: 19c235d868d1feb46bf24e82521a535e,
+    type: 3}
+  _enemySideShotPrefab: {fileID: 8415508507027932365, guid: 77f5be270e900cc45bf236ad074184c1,
+    type: 3}
+  _enemyWeaponsClip: {fileID: 8300000, guid: 8fcf88183c2a0c243ab82a20054b7574, type: 3}
+  _enemyDestroyPowerupClip: {fileID: 8300000, guid: 882449a8743a2d340ae85bdf9b2c3735,
+    type: 3}
+  _randomAvoid: 0
 --- !u!60 &6903505668185549099
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -183,25 +207,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &457676112181894667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6903505668185549097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90077b8e812c7fb4ca6107095a56cc74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemySpeed: 4.5
-  _enemyID: 1
-  _explosionClip: {fileID: 8300000, guid: d561de5c8f96bec4cab3ad0155c2c6b2, type: 3}
-  _fireRate: 0
-  _enemyLaserPrefab: {fileID: 7695861055705472164, guid: 19c235d868d1feb46bf24e82521a535e,
-    type: 3}
-  _enemyWeaponsClip: {fileID: 8300000, guid: 8fcf88183c2a0c243ab82a20054b7574, type: 3}
 --- !u!95 &-2786716258130025406
 Animator:
   serializedVersion: 3

@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    private bool _playerCanStart = false;
-    private Vector3 _gameStartPosition = new Vector3(0, -6, 0);
+    public bool _playerCanStart = false;
+    public Vector3 _gameStartPosition = new Vector3(0, -6, 0);
+
+    public bool _wavesComplete = false;
+    private Vector3 _bossWaveVector = new Vector3(0, 9, 0);
 
     [SerializeField]
     private float _speed = 6.5f;
@@ -90,6 +94,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip _shieldPowerDownClip;
 
+    private bool _isPlayerSpinning = false;
+
     [SerializeField]
     private AudioClip _playerHitClip;
 
@@ -110,7 +116,15 @@ public class Player : MonoBehaviour
     private Background _background;
 
     [SerializeField]
+    private AudioSource _backgroundAudio;
+    [SerializeField]
+    private AudioSource _bossBackgroundAudio;
+    [SerializeField]
     private AudioSource _alarmAudio;
+
+    [SerializeField]
+    private GameObject _canvasPanel;
+    private bool _changePanelColor = false;
     
     void Start()
     {
@@ -165,9 +179,16 @@ public class Player : MonoBehaviour
         }
         else
         {
-            CalculateMovement();
+            if (_wavesComplete == false)
+            {
+                CalculateMovement();
 
-            CalculateFire();
+                CalculateFire();
+            }
+            else
+            {
+                MoveToBossWave();
+            }
         }
     }
 
@@ -192,6 +213,46 @@ public class Player : MonoBehaviour
         yield return null;
     }
 
+    private void MoveToBossWave()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, _bossWaveVector, 2f * Time.deltaTime);
+
+        if (transform.position.y == _bossWaveVector.y)
+        {
+            if (_backgroundAudio.isPlaying == true)
+            {
+                _backgroundAudio.Stop();
+            }
+
+            if (_changePanelColor == false)
+            {
+                _changePanelColor = true;
+
+                _uIManager.SetScreenToBlack();
+            }
+
+            return;
+        }
+    }
+
+    public void StartBossWave()
+    {
+        if (_bossBackgroundAudio.isPlaying == false)
+        {
+            _bossBackgroundAudio.Play();
+        }
+
+        transform.position = _gameStartPosition;
+
+        _playerCanStart = false;
+
+        _wavesComplete = false;
+
+        _spawnManager.StartBossWave();
+
+        _changePanelColor = false;
+    }
+
     public int CurrentLives()
     {
         return _currentLives;
@@ -205,6 +266,11 @@ public class Player : MonoBehaviour
     public int CurrentAmmo()
     {
         return _currentLaserAmmo;
+    }
+
+    public int MaxAmmo()
+    {
+        return _maxLaserAmmo;
     }
 
     public float CurrentEngineThrusterTime()
@@ -248,7 +314,7 @@ public class Player : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        transform.Translate(direction * _speed * Time.deltaTime);
+        transform.Translate(direction * _speed * Time.deltaTime, Space.World);
 
         if (_thrusterAvailable == true)
         {
@@ -280,7 +346,42 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (_isPlayerSpinning == true)
+        {
+            float rotationSpeed = 250f;
+
+            transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            RetrievePowerup();
+        }
+
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -9.3f, 9.3f), Mathf.Clamp(transform.position.y, -4f, 6f), 0);
+    }
+
+    private void RetrievePowerup()
+    {
+        float searchArea = 3f;
+
+        Collider2D[] detectPowerup = Physics2D.OverlapCircleAll(transform.position, searchArea);
+
+        foreach (Collider2D obj in detectPowerup)
+        {
+            Powerup powerup = obj.GetComponent<Powerup>();
+
+            if (obj.gameObject.CompareTag("PlayerPowerup"))
+            {
+                powerup.MoveToPlayer();
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(transform.position, 3f);
     }
 
     private void ThrusterTime()
@@ -340,7 +441,7 @@ public class Player : MonoBehaviour
 
             if (_isTrippleShotActive == true)
             {
-                Instantiate(_weaponsPrefab[1], transform.position, Quaternion.identity);
+                Instantiate(_weaponsPrefab[1], transform.position, transform.rotation);
 
                 WeaponFireAudio(1);
             }
@@ -350,7 +451,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Instantiate(_weaponsPrefab[0], transform.position + laserOffset, Quaternion.identity);
+                Instantiate(_weaponsPrefab[0], transform.position + laserOffset, transform.rotation);
 
                 _currentLaserAmmo--;
 
@@ -411,10 +512,13 @@ public class Player : MonoBehaviour
         float rotationSpeed = 115f;
         float rotationTime = rotationSpeed * Time.deltaTime;
         float waitTime = rotationTime / _maxBombsToSpawn;
+        List<GameObject> currentBombsSpawned = new List<GameObject>();
 
-        while (_isBombActive == true && _activeBombList.Count <= _maxBombsToSpawn)
+        while (_isBombActive == true && currentBombsSpawned.Count <= _maxBombsToSpawn)
         {
             GameObject newBomb = Instantiate(_weaponsPrefab[2], transform.position, Quaternion.identity);
+
+            currentBombsSpawned.Add(newBomb);
 
             _activeBombList.Add(newBomb);
 
@@ -422,6 +526,8 @@ public class Player : MonoBehaviour
 
             yield return new WaitForSeconds(waitTime);
         }
+
+        currentBombsSpawned.Clear();
     }
 
     // Coroutine if wanting bombs to replace standard fire for 5 seconds:
@@ -622,5 +728,23 @@ public class Player : MonoBehaviour
                 _alarmAudio.Stop();
             }
         }
+    }
+
+    public void SpinPlayer()
+    {
+        _isPlayerSpinning = true;
+
+        StartCoroutine(SpinPlayerPowerDownRoutine());
+    }
+
+    IEnumerator SpinPlayerPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+
+        _isPlayerSpinning = false;
+
+        Quaternion normalRotation = Quaternion.Euler(Vector3.zero);
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, normalRotation, 1f);
     }
 }

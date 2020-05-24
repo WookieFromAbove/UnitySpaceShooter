@@ -28,9 +28,18 @@ public class Laser : MonoBehaviour
 
     void CalculatePlayerFire()
     {
-        transform.Translate(Vector3.up * _laserSpeed * Time.deltaTime);
+        transform.Translate(Vector3.up * _laserSpeed * Time.deltaTime, Space.Self);
 
-        if (transform.position.y > 8f)
+        if (transform.position.y > 8f || transform.position.y < -6f)
+        {
+            if (transform.parent != null)
+            {
+                Destroy(transform.parent.gameObject);
+            }
+
+            Destroy(this.gameObject);
+        }
+        else if (transform.position.x > 10f || transform.position.x < -10f)
         {
             if (transform.parent != null)
             {
@@ -45,7 +54,7 @@ public class Laser : MonoBehaviour
     {
         transform.Translate(Vector3.down * _laserSpeed * Time.deltaTime);
 
-        if (transform.position.y < -6f)
+        if (transform.position.y < -6f || transform.position.y > 8f)
         {
             if (transform.parent != null)
             {

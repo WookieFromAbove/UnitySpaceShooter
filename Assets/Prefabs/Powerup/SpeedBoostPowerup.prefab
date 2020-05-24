@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 565328813}
   m_Layer: 0
   m_Name: SpeedBoostPowerup
-  m_TagString: Untagged
+  m_TagString: PlayerPowerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 796439743
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: acb2ff2efa0c47644b793c804d9910d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -147,6 +147,9 @@ MonoBehaviour:
   _powerupSpeed: 3
   _powerupID: 2
   _powerupClip: {fileID: 8300000, guid: ce257857cb5212c4b95d398b8e1151ce, type: 3}
+  _powerupExplosionClip: {fileID: 8300000, guid: 46d2a33649187e0428456de58305ff7d,
+    type: 3}
+  _moveToPlayer: 0
 --- !u!95 &565328813
 Animator:
   serializedVersion: 3

@@ -40,6 +40,8 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(2); // main game scene
     }
 
+    
+
     public void LoadMainMenuControls()
     {
         SceneManager.LoadScene(1); // main menu controls

@@ -7,17 +7,25 @@ public class CameraShake : MonoBehaviour
     private Vector3 _cameraPosition;
     private float _cameraPositionZ;
 
+    private Player _player;
+
     // Start is called before the first frame update
     void Start()
     {
         _cameraPosition = transform.position;
         _cameraPositionZ = transform.position.z;
+
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        if (_player == null)
+        {
+            Debug.Log("Player is NULL.");
+        }
     }
 
     // shake camera if shield !active
     public void PlayerHitShake()
     {
-        StartCoroutine(CameraShakeRoutine(0.2f, 0.2f));
+        StartCoroutine(CameraShakeRoutine(0.15f, 0.2f));
     }
 
 
@@ -43,6 +51,6 @@ public class CameraShake : MonoBehaviour
             yield return null;
         }
 
-        transform.position = Vector3.Lerp(transform.position, _cameraPosition, 0.25f);
+        transform.position = Vector3.Lerp(transform.position, _cameraPosition, 1f);
     }
 }

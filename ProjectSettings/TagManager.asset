@@ -8,6 +8,11 @@ TagManager:
   - Laser
   - EnemyLaser
   - Bomb
+  - EnemyFlame
+  - PlayerPowerup
+  - EnemyPowerupShot
+  - Boss
+  - Canvas
   layers:
   - Default
   - TransparentFX

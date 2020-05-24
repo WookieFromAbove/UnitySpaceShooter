@@ -109,6 +109,7 @@ public class Bomb : MonoBehaviour
             Vector3 rotationPosition;
             float radiusSpeed = 0.5f;
 
+            // check bomb rotation when player spinning
             transform.position = (transform.position - playerTransform.position).normalized * _radius + playerTransform.position;
 
             transform.RotateAround(playerTransform.position, rotationAxis, _rotationSpeed * Time.deltaTime);
